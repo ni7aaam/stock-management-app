@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <style>
+        body {
+            background-color: #f4f6f8;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            border-radius: 10px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        tr:hover td {
+            background-color: #f1f1f1;
+            transition: background-color 0.3s ease;
+        }
+        input, select {
+            padding: 12px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #bdc3c7;
+            width: 250px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #6a11cb;
+            outline: none;
+        }
+        button {
+            padding: 12px 25px;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            margin: 5px;
+        }
+        button:hover {
+            background: linear-gradient(to right, #2575fc, #6a11cb);
+        }
+        .logout-btn {
+            background-color: #e74c3c;
+            margin-top: 30px;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+    </style>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+</head>
+<body>
+    <div class="container">
+        <h1>Admin Dashboard</h1>
+
+        <h2>Available Stock</h2>
+        <table>
+            <tr>
+                <th>Stock ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+            </tr>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td> 
+                <td>{{ stock.item_name }}</td>
+                <td>{{ stock.quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Add New Stock</h2>
+        <form method="POST" action="/add_stock">
+            <input type="text" name="item_name" placeholder="Item Name" required>
+            <input type="number" name="quantity" placeholder="Quantity" required>
+            <button type="submit">Add Stock</button>
+        </form>
+
+        <h2>Issue Stock to Branch</h2>
+        <form method="POST" action="/issue_stock">
+            <input type="number" name="stock_id" placeholder="Stock ID" required>
+            <input type="number" name="branch_id" placeholder="Branch ID" required>
+            <input type="number" name="issued_quantity" placeholder="Quantity to Issue" required>
+            <button type="submit">Issue Stock</button>
+        </form>
+
+        <!-- Centered Logout Button -->
+        <form id="logoutForm" action="/logout" method="GET" class="logout-form">
+            <button type="button" class="logout-btn" onclick="confirmLogout()">
+                Logout
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function confirmLogout() {
+            var confirmation = confirm("Are you sure you want to logout?");
+            if (confirmation) {
+                document.getElementById('logoutForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Branch Dashboard</title>
+    <style>
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 30px auto;
+            padding: 30px;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        table {
+            margin: 20px auto;
+            border-collapse: collapse;
+            width: 90%;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+        th {
+            background-color: #34495e;
+            color: white;
+        }
+        td {
+            background-color: #f9f9f9;
+        }
+        tr:hover td {
+            background-color: #eef1f5;
+            transition: background-color 0.3s ease;
+        }
+        input {
+            padding: 12px;
+            margin: 10px 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            width: 250px;
+            transition: border-color 0.3s ease;
+        }
+        input:focus {
+            border-color: #2980b9;
+            outline: none;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin: 5px;
+        }
+        button:hover {
+            background-color: #1f6391;
+        }
+        .logout-btn {
+            background-color: #e74c3c;
+        }
+        .logout-btn:hover {
+            background-color: #c0392b;
+        }
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .logout-form {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .message {
+            color: green;
+            font-weight: bold;
+            text-align: center;
+            margin: 15px 0;
+        }
+    </style>
+    {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+</head>
+<body>
+    <div class="container">
+        <h1>Branch Dashboard</h1>
+
+        <h2>Branch Stock</h2>
+        <table>
+            <tr>
+                <th>Stock ID</th>
+                <th>Item Name</th>
+                <th>Quantity</th>
+            </tr>
+            {% for stock in stocks %}
+            <tr>
+                <td>{{ stock.id }}</td> 
+                <td>{{ stock.item_name }}</td>
+                <td>{{ stock.issued_quantity }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Report Damaged Stock</h2>
+        <form method="POST" action="/report_damage/{{ branch_id }}">
+            <input type="number" name="stock_id" placeholder="Stock ID" required>
+            <input type="number" name="damaged_quantity" placeholder="Damaged Quantity" required>
+            <button type="submit">Report Damage</button>
+        </form>
+
+        <h2>Return Stock to Company</h2>
+        <form method="POST" action="/return_stock/{{ branch_id }}">
+            <input type="number" name="stock_id" placeholder="Stock ID" required>
+            <input type="number" name="return_quantity" placeholder="Return Quantity" required>
+            <button type="submit">Return Stock</button>
+        </form>
+
+        <!-- Centered Logout Button -->
+        <form id="logoutForm" action="/logout" method="GET" class="logout-form">
+            <button type="button" class="logout-btn" onclick="confirmLogout()">
+                Logout
+            </button>
+        </form>
+    </div>
+
+    <script>
+        function confirmLogout() {
+            var confirmation = confirm("Are you sure you want to logout?");
+            if (confirmation) {
+                document.getElementById('logoutForm').submit();
+            }
+        }
+    </script>
+</body>
+</html>

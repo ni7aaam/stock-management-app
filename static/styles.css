@@ -1,0 +1,45 @@
+body {
+    /* Background gradient with background image */
+    background: linear-gradient(to right, rgba(106, 17, 203, 0.7), rgba(37, 117, 252, 0.7)), 
+                url('/static/nwedit.jpg') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+}
+
+form {
+    background-color: white;
+    color: black;
+    display: inline-block;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 0 15px #000;
+    min-width: 300px;
+}
+
+input, select {
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: 1px solid #333;
+    width: 80%;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #2575fc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #6a11cb;
+}
+
+h1 {
+    margin-bottom: 30px;
+}
